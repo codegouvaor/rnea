@@ -40,19 +40,19 @@ function collectChildHrefs(section: NavigationSection): string[] {
 }
 
 /**
- * Government Header of the Ministry of Justice of the Republic of Astoria.
+ * Government Header of the Registre National des Entreprises d'Astoria.
  *
  * Main navigation — the permanent information architecture of the portal,
- * organised around the institutional perimeter of the ministry rather than
- * generic website categories:
+ * organised around the register journey rather than generic website
+ * categories:
  *
- *   Justice              → comprendre : l'organisation, la politique judiciaire, l'accès à la justice, les droits
- *   Droit                → consulter : les textes, les codes, la jurisprudence, la recherche juridique
- *   Juridictions         → trouver   : l'ordre judiciaire, les tribunaux, les juridictions spécialisées, les audiences
- *   Procédures           → agir      : les procédures civiles, pénales, administratives, les démarches
- *   Professionnels       → exercer   : la magistrature, les auxiliaires de justice, les carrières, la formation
- *   Données & ressources → connaître : les décisions, les statistiques, les publications, les données ouvertes
- *   Le Ministère         → incarner  : l'institution, l'administration, la transparence, les actualités
+ *   Entreprises              → agir      : rechercher, créer, modifier, cesser une activité
+ *   Registre                 → consulter : les entreprises enregistrées, les établissements, les dirigeants, l'historique
+ *   Formalités               → déclarer  : les formalités, de la création à la cessation
+ *   Propriété intellectuelle → protéger  : les marques, les brevets, les dessins et modèles
+ *   Documents                → obtenir   : les extraits, les certificats, les documents déposés, la vérification
+ *   Données                  → exploiter : les données ouvertes, les statistiques, les API, les téléchargements
+ *   RNEA                     → connaître : le registre, ses tarifs, l'aide et le contact
  *
  * Each entry opens an institutional mega-menu (leader band with the entry
  * description and its main action, plus four section columns of four links).
@@ -67,9 +67,10 @@ function collectChildHrefs(section: NavigationSection): string[] {
  * `Escape`, keyboard support, mobile drawer) is provided by the ADS runtime
  * (`StartDsfrOnHydration`): the same `primaryNavigation` data drives the
  * desktop mega-menus and the hierarchical mobile drawer, so `site-structure.ts`
- * is the single source of truth for both. When the user is authenticated the
- * “MyGouv” link is hidden and a custom account menu (`UserAccountMenu`) is
- * rendered instead.
+ * is the single source of truth for both. The search button opens the header
+ * search dialog, which targets the central company search of the register.
+ * When the user is authenticated the “MyGouv” link is hidden and a custom
+ * account menu (`UserAccountMenu`) is rendered instead.
  */
 export function GovernmentHeader() {
   const t = useTranslations();

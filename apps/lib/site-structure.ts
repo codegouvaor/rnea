@@ -1,7 +1,7 @@
 /**
- * URL structure of the public portal of Bloctel, the national service for
- * managing unwanted commercial communications of the Republic of Astoria
- * (`bloctel.gouv.aor`).
+ * URL structure of the public portal of the Registre National des Entreprises
+ * d'Astoria (RNEA) — the national registry of businesses of the Republic of
+ * Astoria (`rnea.gouv.aor`).
  *
  * Hrefs are locale-agnostic pathnames: the next-intl Link (registered as the
  * ADS link renderer) prefixes the active locale automatically. Labels are
@@ -21,24 +21,23 @@
  * theme, section or link never requires rewriting a component — it only
  * requires editing this file (and the matching message keys).
  *
- * The information architecture is organised around the visitor and their
- * protection against unwanted commercial prospecting — not around the
- * administrative organisation that runs the service. It follows the citizen
- * journey, from rights to action:
+ * The information architecture is organised around the register and its
+ * users — not around the administrative organisation that runs the service.
+ * It follows the journey of anyone who must consult or act on the registry:
  *
- *   Mes droits      → comprendre : le démarchage, les droits et les situations
- *   Ma protection   → se protéger : le registre, les coordonnées, les préférences et consentements
- *   Signaler        → agir       : déclarer un démarchage abusif et en suivre le traitement
- *   Professionnels  → se conformer : consulter la liste, recueillir le consentement, piloter les campagnes
- *   Réglementation  → connaître  : le cadre légal, les obligations, les restrictions et les contrôles
- *   Services        → accéder    : les portails citoyen et professionnel, les développeurs, les données
- *   Aide            → être aidé  : les questions fréquentes, les guides et l'assistance
+ *   Entreprises              → agir      : rechercher, créer, modifier, cesser
+ *   Registre                 → consulter : les entreprises enregistrées, les établissements, les dirigeants, l'historique
+ *   Formalités               → déclarer  : les formalités, de la création à la cessation
+ *   Propriété intellectuelle → protéger  : les marques, les brevets, les dessins et modèles
+ *   Documents                → obtenir   : les extraits, les certificats, les actes déposés, la vérification
+ *   Données                  → exploiter : les données ouvertes, les statistiques, les API, les téléchargements
+ *   RNEA                     → connaître : le registre, ses tarifs, l'aide et le contact
  *
- * The structure deliberately keeps a Bloctel perimeter: the operational
- * treatment of reports (investigations, sanctions, litigation) belongs to the
- * competent authorities and is only exposed here through the entry points
- * that matter to the visitor. It is sufficiently generic to grow with the
- * service without inventing new sections just to fill the 7 × 4 × 4 model.
+ * The structure deliberately keeps an RNEA perimeter: it exposes the
+ * destinations that matter to anyone who must consult or act on the register,
+ * without mirroring the internal organisation of the administration. It is
+ * sufficiently generic to grow with the service without inventing new
+ * sections just to fill the 7 × 4 × 4 model.
  *
  * The structure is validated both at compile time (the tuple types below
  * enforce exactly 7 themes × 4 sections × 4 links) and at runtime
@@ -51,18 +50,18 @@ export const PORTAL_HOME = "/";
 
 /**
  * The seven entries of the portal — both `nav.primary` and `footer.columns`
- * keys. The first three entries carry the citizen journey (rights,
- * protection, reporting); the fourth addresses professionals; the last three
- * are the reference, service and support entries.
+ * keys. The first four entries carry the register journey (companies,
+ * consultation, formalities, intellectual property); the last three are the
+ * documents, data and institutional entries.
  */
 export type PrimaryNavKey =
-  | "mesDroits"
-  | "maProtection"
-  | "signaler"
-  | "professionnels"
-  | "reglementation"
-  | "services"
-  | "aide";
+  | "entreprises"
+  | "registre"
+  | "formalites"
+  | "proprieteIntellectuelle"
+  | "documents"
+  | "donnees"
+  | "rnea";
 
 /** A destination inside a mega-menu panel; its label is a `nav.panel` message key. */
 export type NavigationLink = {
@@ -107,11 +106,10 @@ export type NavigationItems = readonly [
  * One top-level entry of the Government Header navigation.
  *
  * Navigation principle (info.gouv.fr-inspired, adapted to Astoria): the header
- * is organised around the visitor journey and their protection — not around
- * the internal structure of the administration. Each entry opens a mega-menu
- * panel composed of
+ * is organised around the register journey — not around the internal structure
+ * of the administration. Each entry opens a mega-menu panel composed of
  *  - a leader band: the entry name, a one-line description and the main
- *    action of the section (“Tout sur mes droits”, …),
+ *    action of the section (“Tout sur les entreprises”, …),
  *  - four sections, each headed by its title and followed by its four
  *    destinations.
  *
@@ -141,13 +139,13 @@ export type FooterColumn = {
 };
 
 export const sectionPaths = {
-  mesDroits: "/mes-droits",
-  maProtection: "/ma-protection",
-  signaler: "/signaler",
-  professionnels: "/professionnels",
-  reglementation: "/reglementation",
-  services: "/services",
-  aide: "/aide",
+  entreprises: "/entreprises",
+  registre: "/registre",
+  formalites: "/formalites",
+  proprieteIntellectuelle: "/propriete-intellectuelle",
+  documents: "/documents",
+  donnees: "/donnees",
+  rnea: "/rnea",
 } as const;
 
 export const legalPaths = {
@@ -252,21 +250,24 @@ export function countNavigationLinks(
 }
 
 /**
- * Main navigation of the Government Header of Bloctel — the permanent
- * information architecture of the portal, organised in seven entries:
+ * Main navigation of the Government Header of the Registre National des
+ * Entreprises d'Astoria — the permanent information architecture of the
+ * portal, organised in seven entries:
  *
- *   Mes droits      → comprendre : le démarchage, les droits, les situations et la compréhension du dispositif
- *   Ma protection   → se protéger : le registre, les coordonnées, les préférences et les consentements
- *   Signaler        → agir       : créer et suivre un signalement, connaître les suites
- *   Professionnels  → se conformer : l'entreprise, la consultation de la liste, les consentements et les campagnes
- *   Réglementation  → connaître  : le cadre légal, les obligations, les restrictions et les contrôles
- *   Services        → accéder    : les portails citoyen et professionnel, les développeurs et les données publiques
- *   Aide            → être aidé  : les questions fréquentes, les guides, l'assistance et la présentation du service
+ *   Entreprises              → agir      : rechercher, créer, modifier, cesser une activité
+ *   Registre                 → consulter : les entreprises enregistrées, les établissements, les dirigeants, l'historique
+ *   Formalités               → déclarer  : les formalités, de la création à la cessation
+ *   Propriété intellectuelle → protéger  : les marques, les brevets, les dessins et modèles
+ *   Documents                → obtenir   : les extraits, les certificats, les documents déposés, la vérification
+ *   Données                  → exploiter : les données ouvertes, les statistiques, les API, les téléchargements
+ *   RNEA                     → connaître : le registre, ses tarifs, l'aide et le contact
  *
- * The first three entries follow the citizen journey; the fourth is the
- * distinct professional journey; the last three are the reference, access and
- * support entries. This keeps the two audiences clearly separated without
- * turning the navigation into a mirror of the administrative organisation.
+ * The first four entries carry the operational journey of the registry
+ * (companies, consultation, formalities, protection of creations); the last
+ * three are the reference, data and institutional entries. The two audiences
+ * of the registry (those who act on a company, those who consult the register)
+ * stay separated without turning the navigation into a mirror of the
+ * administrative organisation.
  *
  * Each entry opens a mega-menu panel with a leader band and four sections —
  * each section headed by its title and followed by its four destinations. The
@@ -278,376 +279,385 @@ export function countNavigationLinks(
 export const primaryNavigation: ReadonlyArray<NavigationSection> = [
   {
     type: "megaMenu",
-    labelKey: "mesDroits",
-    href: sectionPaths.mesDroits,
+    labelKey: "entreprises",
+    href: sectionPaths.entreprises,
     leader: {
-      titleKey: "mesDroits.title",
-      paragraphKey: "mesDroits.text",
+      titleKey: "entreprises.title",
+      paragraphKey: "entreprises.text",
       link: {
-        labelKey: "mesDroits.allLink",
-        href: sectionPaths.mesDroits,
+        labelKey: "entreprises.allLink",
+        href: sectionPaths.entreprises,
       },
     },
     primaryItems: [
       {
-        labelKey: "mesDroits.demarchage.title",
-        href: `${sectionPaths.mesDroits}/demarchage`,
+        labelKey: "entreprises.rechercher.title",
+        href: `${sectionPaths.entreprises}/rechercher`,
         links: [
-          { labelKey: "mesDroits.demarchage.questCeQueLeDemarchage", href: `${sectionPaths.mesDroits}/demarchage/quest-ce-que-le-demarchage` },
-          { labelKey: "mesDroits.demarchage.demarchageAutorise", href: `${sectionPaths.mesDroits}/demarchage/demarchage-autorise` },
-          { labelKey: "mesDroits.demarchage.demarchageInterdit", href: `${sectionPaths.mesDroits}/demarchage/demarchage-interdit` },
-          { labelKey: "mesDroits.demarchage.reconnaitreUnAppelAbusif", href: `${sectionPaths.mesDroits}/demarchage/reconnaitre-un-appel-abusif` },
+          { labelKey: "entreprises.rechercher.simple", href: `${sectionPaths.entreprises}/rechercher/simple` },
+          { labelKey: "entreprises.rechercher.parSiren", href: `${sectionPaths.entreprises}/rechercher/par-siren` },
+          { labelKey: "entreprises.rechercher.parDirigeant", href: `${sectionPaths.entreprises}/rechercher/par-dirigeant` },
+          { labelKey: "entreprises.rechercher.avancee", href: `${sectionPaths.entreprises}/rechercher/avancee` },
         ],
       },
       {
-        labelKey: "mesDroits.vosDroits.title",
-        href: `${sectionPaths.mesDroits}/vos-droits`,
+        labelKey: "entreprises.creer.title",
+        href: `${sectionPaths.entreprises}/creer`,
         links: [
-          { labelKey: "mesDroits.vosDroits.droitOpposition", href: `${sectionPaths.mesDroits}/vos-droits/droit-d-opposition` },
-          { labelKey: "mesDroits.vosDroits.protectionDesConsommateurs", href: `${sectionPaths.mesDroits}/vos-droits/protection-des-consommateurs` },
-          { labelKey: "mesDroits.vosDroits.donneesPersonnelles", href: `${sectionPaths.mesDroits}/vos-droits/donnees-personnelles` },
-          { labelKey: "mesDroits.vosDroits.recoursEtReclamations", href: `${sectionPaths.mesDroits}/vos-droits/recours-et-reclamations` },
+          { labelKey: "entreprises.creer.conditionsImmatriculation", href: `${sectionPaths.entreprises}/creer/conditions-d-immatriculation` },
+          { labelKey: "entreprises.creer.declarationActivite", href: `${sectionPaths.entreprises}/creer/declaration-d-activite` },
+          { labelKey: "entreprises.creer.formalitesCreation", href: `${sectionPaths.entreprises}/creer/formalites-de-creation` },
+          { labelKey: "entreprises.creer.suiviCreation", href: `${sectionPaths.entreprises}/creer/suivi-de-la-creation` },
         ],
       },
       {
-        labelKey: "mesDroits.situations.title",
-        href: `${sectionPaths.mesDroits}/situations`,
+        labelKey: "entreprises.modifier.title",
+        href: `${sectionPaths.entreprises}/modifier`,
         links: [
-          { labelKey: "mesDroits.situations.particuliers", href: `${sectionPaths.mesDroits}/situations/particuliers` },
-          { labelKey: "mesDroits.situations.numerosMobiles", href: `${sectionPaths.mesDroits}/situations/numeros-mobiles` },
-          { labelKey: "mesDroits.situations.numerosProfessionnels", href: `${sectionPaths.mesDroits}/situations/numeros-professionnels` },
-          { labelKey: "mesDroits.situations.casParticuliers", href: `${sectionPaths.mesDroits}/situations/cas-particuliers` },
+          { labelKey: "entreprises.modifier.changementDirigeant", href: `${sectionPaths.entreprises}/modifier/changement-de-dirigeant` },
+          { labelKey: "entreprises.modifier.changementAdresse", href: `${sectionPaths.entreprises}/modifier/changement-d-adresse` },
+          { labelKey: "entreprises.modifier.modificationActivite", href: `${sectionPaths.entreprises}/modifier/modification-de-l-activite` },
+          { labelKey: "entreprises.modifier.miseAJourInformations", href: `${sectionPaths.entreprises}/modifier/mise-a-jour-des-informations` },
         ],
       },
       {
-        labelKey: "mesDroits.comprendre.title",
-        href: `${sectionPaths.mesDroits}/comprendre`,
+        labelKey: "entreprises.cesser.title",
+        href: `${sectionPaths.entreprises}/cesser`,
         links: [
-          { labelKey: "mesDroits.comprendre.fonctionnementDeBloctel", href: `${sectionPaths.mesDroits}/comprendre/fonctionnement-de-bloctel` },
-          { labelKey: "mesDroits.comprendre.acteursDuDispositif", href: `${sectionPaths.mesDroits}/comprendre/acteurs-du-dispositif` },
-          { labelKey: "mesDroits.comprendre.chiffresCles", href: `${sectionPaths.mesDroits}/comprendre/chiffres-cles` },
-          { labelKey: "mesDroits.comprendre.questionsSurLeDemarchage", href: `${sectionPaths.mesDroits}/comprendre/questions-sur-le-demarchage` },
+          { labelKey: "entreprises.cesser.declarationCessation", href: `${sectionPaths.entreprises}/cesser/declaration-de-cessation` },
+          { labelKey: "entreprises.cesser.radiation", href: `${sectionPaths.entreprises}/cesser/radiation-du-registre` },
+          { labelKey: "entreprises.cesser.transmission", href: `${sectionPaths.entreprises}/cesser/transmission-d-entreprise` },
+          { labelKey: "entreprises.cesser.suitesCessation", href: `${sectionPaths.entreprises}/cesser/suites-de-la-cessation` },
         ],
       },
     ],
   },
   {
     type: "megaMenu",
-    labelKey: "maProtection",
-    href: sectionPaths.maProtection,
+    labelKey: "registre",
+    href: sectionPaths.registre,
     leader: {
-      titleKey: "maProtection.title",
-      paragraphKey: "maProtection.text",
+      titleKey: "registre.title",
+      paragraphKey: "registre.text",
       link: {
-        labelKey: "maProtection.allLink",
-        href: sectionPaths.maProtection,
+        labelKey: "registre.allLink",
+        href: sectionPaths.registre,
       },
     },
     primaryItems: [
       {
-        labelKey: "maProtection.monRegistre.title",
-        href: `${sectionPaths.maProtection}/mon-registre`,
+        labelKey: "registre.entreprisesEnregistrees.title",
+        href: `${sectionPaths.registre}/entreprises-enregistrees`,
         links: [
-          { labelKey: "maProtection.monRegistre.mInscrire", href: `${sectionPaths.maProtection}/mon-registre/m-inscrire` },
-          { labelKey: "maProtection.monRegistre.verifierMonInscription", href: `${sectionPaths.maProtection}/mon-registre/verifier-mon-inscription` },
-          { labelKey: "maProtection.monRegistre.renouvelerMonInscription", href: `${sectionPaths.maProtection}/mon-registre/renouveler-mon-inscription` },
-          { labelKey: "maProtection.monRegistre.meDesinscrire", href: `${sectionPaths.maProtection}/mon-registre/me-desinscrire` },
+          { labelKey: "registre.entreprisesEnregistrees.liste", href: `${sectionPaths.registre}/entreprises-enregistrees/liste-des-entreprises` },
+          { labelKey: "registre.entreprisesEnregistrees.dernieresImmatriculations", href: `${sectionPaths.registre}/entreprises-enregistrees/dernieres-immatriculations` },
+          { labelKey: "registre.entreprisesEnregistrees.etatDuRegistre", href: `${sectionPaths.registre}/entreprises-enregistrees/etat-du-registre` },
+          { labelKey: "registre.entreprisesEnregistrees.publicationsLegales", href: `${sectionPaths.registre}/entreprises-enregistrees/publications-legales` },
         ],
       },
       {
-        labelKey: "maProtection.coordonnees.title",
-        href: `${sectionPaths.maProtection}/coordonnees`,
+        labelKey: "registre.etablissements.title",
+        href: `${sectionPaths.registre}/etablissements`,
         links: [
-          { labelKey: "maProtection.coordonnees.ajouterUnNumero", href: `${sectionPaths.maProtection}/coordonnees/ajouter-un-numero` },
-          { labelKey: "maProtection.coordonnees.modifierUnNumero", href: `${sectionPaths.maProtection}/coordonnees/modifier-un-numero` },
-          { labelKey: "maProtection.coordonnees.supprimerUnNumero", href: `${sectionPaths.maProtection}/coordonnees/supprimer-un-numero` },
-          { labelKey: "maProtection.coordonnees.numerosEtLignes", href: `${sectionPaths.maProtection}/coordonnees/numeros-et-lignes` },
+          { labelKey: "registre.etablissements.liste", href: `${sectionPaths.registre}/etablissements/liste-des-etablissements` },
+          { labelKey: "registre.etablissements.parRegion", href: `${sectionPaths.registre}/etablissements/par-region` },
+          { labelKey: "registre.etablissements.ouvertureFermeture", href: `${sectionPaths.registre}/etablissements/ouverture-et-fermeture` },
+          { labelKey: "registre.etablissements.rechercher", href: `${sectionPaths.registre}/etablissements/rechercher` },
         ],
       },
       {
-        labelKey: "maProtection.preferences.title",
-        href: `${sectionPaths.maProtection}/preferences`,
+        labelKey: "registre.dirigeants.title",
+        href: `${sectionPaths.registre}/dirigeants`,
         links: [
-          { labelKey: "maProtection.preferences.canauxDeContact", href: `${sectionPaths.maProtection}/preferences/canaux-de-contact` },
-          { labelKey: "maProtection.preferences.typesDAppels", href: `${sectionPaths.maProtection}/preferences/types-d-appels` },
-          { labelKey: "maProtection.preferences.horairesEtFrequence", href: `${sectionPaths.maProtection}/preferences/horaires-et-frequence` },
-          { labelKey: "maProtection.preferences.notifications", href: `${sectionPaths.maProtection}/preferences/notifications` },
+          { labelKey: "registre.dirigeants.liste", href: `${sectionPaths.registre}/dirigeants/liste-des-dirigeants` },
+          { labelKey: "registre.dirigeants.fonctionsMandats", href: `${sectionPaths.registre}/dirigeants/fonctions-et-mandats` },
+          { labelKey: "registre.dirigeants.incompatibilites", href: `${sectionPaths.registre}/dirigeants/incompatibilites-et-interdictions` },
+          { labelKey: "registre.dirigeants.rechercher", href: `${sectionPaths.registre}/dirigeants/rechercher` },
         ],
       },
       {
-        labelKey: "maProtection.consentements.title",
-        href: `${sectionPaths.maProtection}/consentements`,
+        labelKey: "registre.historique.title",
+        href: `${sectionPaths.registre}/historique`,
         links: [
-          { labelKey: "maProtection.consentements.consentementCommercial", href: `${sectionPaths.maProtection}/consentements/consentement-commercial` },
-          { labelKey: "maProtection.consentements.retirerMonConsentement", href: `${sectionPaths.maProtection}/consentements/retirer-mon-consentement` },
-          { labelKey: "maProtection.consentements.consentementDesTiers", href: `${sectionPaths.maProtection}/consentements/consentement-des-tiers` },
-          { labelKey: "maProtection.consentements.gererMesConsentements", href: `${sectionPaths.maProtection}/consentements/gerer-mes-consentements` },
+          { labelKey: "registre.historique.evenements", href: `${sectionPaths.registre}/historique/evenements-de-la-vie-de-l-entreprise` },
+          { labelKey: "registre.historique.anciennesDenominations", href: `${sectionPaths.registre}/historique/anciennes-denominations` },
+          { labelKey: "registre.historique.transfertsFusions", href: `${sectionPaths.registre}/historique/transferts-et-fusions` },
+          { labelKey: "registre.historique.archives", href: `${sectionPaths.registre}/historique/archives-du-registre` },
         ],
       },
     ],
   },
   {
     type: "megaMenu",
-    labelKey: "signaler",
-    href: sectionPaths.signaler,
+    labelKey: "formalites",
+    href: sectionPaths.formalites,
     leader: {
-      titleKey: "signaler.title",
-      paragraphKey: "signaler.text",
-      link: { labelKey: "signaler.allLink", href: sectionPaths.signaler },
-    },
-    primaryItems: [
-      {
-        labelKey: "signaler.nouveauSignalement.title",
-        href: `${sectionPaths.signaler}/nouveau-signalement`,
-        links: [
-          { labelKey: "signaler.nouveauSignalement.signalerUnAppel", href: `${sectionPaths.signaler}/nouveau-signalement/signaler-un-appel` },
-          { labelKey: "signaler.nouveauSignalement.signalerUnSms", href: `${sectionPaths.signaler}/nouveau-signalement/signaler-un-sms` },
-          { labelKey: "signaler.nouveauSignalement.signalerUnNumero", href: `${sectionPaths.signaler}/nouveau-signalement/signaler-un-numero` },
-          { labelKey: "signaler.nouveauSignalement.informationsAFournir", href: `${sectionPaths.signaler}/nouveau-signalement/informations-a-fournir` },
-        ],
-      },
-      {
-        labelKey: "signaler.mesSignalements.title",
-        href: `${sectionPaths.signaler}/mes-signalements`,
-        links: [
-          { labelKey: "signaler.mesSignalements.suivreUnSignalement", href: `${sectionPaths.signaler}/mes-signalements/suivre-un-signalement` },
-          { labelKey: "signaler.mesSignalements.historique", href: `${sectionPaths.signaler}/mes-signalements/historique` },
-          { labelKey: "signaler.mesSignalements.modifierUnSignalement", href: `${sectionPaths.signaler}/mes-signalements/modifier-un-signalement` },
-          { labelKey: "signaler.mesSignalements.supprimerUnSignalement", href: `${sectionPaths.signaler}/mes-signalements/supprimer-un-signalement` },
-        ],
-      },
-      {
-        labelKey: "signaler.informations.title",
-        href: `${sectionPaths.signaler}/informations`,
-        links: [
-          { labelKey: "signaler.informations.questCeQuUnSignalement", href: `${sectionPaths.signaler}/informations/quest-ce-qu-un-signalement` },
-          { labelKey: "signaler.informations.quiPeutSignaler", href: `${sectionPaths.signaler}/informations/qui-peut-signaler` },
-          { labelKey: "signaler.informations.confidentialite", href: `${sectionPaths.signaler}/informations/confidentialite` },
-          { labelKey: "signaler.informations.signalementsEtDroits", href: `${sectionPaths.signaler}/informations/signalements-et-droits` },
-        ],
-      },
-      {
-        labelKey: "signaler.suites.title",
-        href: `${sectionPaths.signaler}/suites`,
-        links: [
-          { labelKey: "signaler.suites.traitementDesSignalements", href: `${sectionPaths.signaler}/suites/traitement-des-signalements` },
-          { labelKey: "signaler.suites.enquetesEtControles", href: `${sectionPaths.signaler}/suites/enquetes-et-controles` },
-          { labelKey: "signaler.suites.sanctions", href: `${sectionPaths.signaler}/suites/sanctions` },
-          { labelKey: "signaler.suites.resultats", href: `${sectionPaths.signaler}/suites/resultats` },
-        ],
-      },
-    ],
-  },
-  {
-    type: "megaMenu",
-    labelKey: "professionnels",
-    href: sectionPaths.professionnels,
-    leader: {
-      titleKey: "professionnels.title",
-      paragraphKey: "professionnels.text",
+      titleKey: "formalites.title",
+      paragraphKey: "formalites.text",
       link: {
-        labelKey: "professionnels.allLink",
-        href: sectionPaths.professionnels,
+        labelKey: "formalites.allLink",
+        href: sectionPaths.formalites,
       },
     },
     primaryItems: [
       {
-        labelKey: "professionnels.monEntreprise.title",
-        href: `${sectionPaths.professionnels}/mon-entreprise`,
+        labelKey: "formalites.toutes.title",
+        href: `${sectionPaths.formalites}/toutes`,
         links: [
-          { labelKey: "professionnels.monEntreprise.espaceProfessionnel", href: `${sectionPaths.professionnels}/mon-entreprise/espace-professionnel` },
-          { labelKey: "professionnels.monEntreprise.declarerMonActivite", href: `${sectionPaths.professionnels}/mon-entreprise/declarer-mon-activite` },
-          { labelKey: "professionnels.monEntreprise.gererMesAcces", href: `${sectionPaths.professionnels}/mon-entreprise/gerer-mes-acces` },
-          { labelKey: "professionnels.monEntreprise.conformite", href: `${sectionPaths.professionnels}/mon-entreprise/conformite` },
+          { labelKey: "formalites.toutes.parType", href: `${sectionPaths.formalites}/toutes/formalites-par-type` },
+          { labelKey: "formalites.toutes.enCours", href: `${sectionPaths.formalites}/toutes/formalites-en-cours` },
+          { labelKey: "formalites.toutes.historique", href: `${sectionPaths.formalites}/toutes/historique-des-formalites` },
+          { labelKey: "formalites.toutes.coutsDelais", href: `${sectionPaths.formalites}/toutes/couts-et-delais` },
         ],
       },
       {
-        labelKey: "professionnels.verifier.title",
-        href: `${sectionPaths.professionnels}/verifier`,
+        labelKey: "formalites.creation.title",
+        href: `${sectionPaths.formalites}/creation`,
         links: [
-          { labelKey: "professionnels.verifier.consulterLaListe", href: `${sectionPaths.professionnels}/verifier/consulter-la-liste` },
-          { labelKey: "professionnels.verifier.interrogerUnNumero", href: `${sectionPaths.professionnels}/verifier/interroger-un-numero` },
-          { labelKey: "professionnels.verifier.miseAJourDesDonnees", href: `${sectionPaths.professionnels}/verifier/mise-a-jour-des-donnees` },
-          { labelKey: "professionnels.verifier.tracabiliteDesConsultations", href: `${sectionPaths.professionnels}/verifier/tracabilite-des-consultations` },
+          { labelKey: "formalites.creation.immatriculation", href: `${sectionPaths.formalites}/creation/immatriculation` },
+          { labelKey: "formalites.creation.debutActivite", href: `${sectionPaths.formalites}/creation/declaration-de-debut-d-activite` },
+          { labelKey: "formalites.creation.simplifiees", href: `${sectionPaths.formalites}/creation/formalites-simplifiees` },
+          { labelKey: "formalites.creation.documentsFournir", href: `${sectionPaths.formalites}/creation/documents-a-fournir` },
         ],
       },
       {
-        labelKey: "professionnels.consentements.title",
-        href: `${sectionPaths.professionnels}/consentements`,
+        labelKey: "formalites.modification.title",
+        href: `${sectionPaths.formalites}/modification`,
         links: [
-          { labelKey: "professionnels.consentements.recueillirLeConsentement", href: `${sectionPaths.professionnels}/consentements/recueillir-le-consentement` },
-          { labelKey: "professionnels.consentements.prouverLeConsentement", href: `${sectionPaths.professionnels}/consentements/prouver-le-consentement` },
-          { labelKey: "professionnels.consentements.dureeDeValidite", href: `${sectionPaths.professionnels}/consentements/duree-de-validite` },
-          { labelKey: "professionnels.consentements.exceptions", href: `${sectionPaths.professionnels}/consentements/exceptions` },
+          { labelKey: "formalites.modification.enregistrables", href: `${sectionPaths.formalites}/modification/modifications-enregistrables` },
+          { labelKey: "formalites.modification.declaration", href: `${sectionPaths.formalites}/modification/declaration-de-modification` },
+          { labelKey: "formalites.modification.piecesJustificatives", href: `${sectionPaths.formalites}/modification/pieces-justificatives` },
+          { labelKey: "formalites.modification.delaisOppositions", href: `${sectionPaths.formalites}/modification/delais-et-oppositions` },
         ],
       },
       {
-        labelKey: "professionnels.campagnes.title",
-        href: `${sectionPaths.professionnels}/campagnes`,
+        labelKey: "formalites.cessation.title",
+        href: `${sectionPaths.formalites}/cessation`,
         links: [
-          { labelKey: "professionnels.campagnes.preparerUneCampagne", href: `${sectionPaths.professionnels}/campagnes/preparer-une-campagne` },
-          { labelKey: "professionnels.campagnes.fichiersDAppel", href: `${sectionPaths.professionnels}/campagnes/fichiers-d-appel` },
-          { labelKey: "professionnels.campagnes.controlerLesListes", href: `${sectionPaths.professionnels}/campagnes/controler-les-listes` },
-          { labelKey: "professionnels.campagnes.bonnesPratiques", href: `${sectionPaths.professionnels}/campagnes/bonnes-pratiques` },
+          { labelKey: "formalites.cessation.declaration", href: `${sectionPaths.formalites}/cessation/declaration-de-cessation` },
+          { labelKey: "formalites.cessation.radiation", href: `${sectionPaths.formalites}/cessation/radiation-du-registre` },
+          { labelKey: "formalites.cessation.transmissionUniverselle", href: `${sectionPaths.formalites}/cessation/transmission-universelle` },
+          { labelKey: "formalites.cessation.liquidation", href: `${sectionPaths.formalites}/cessation/liquidation` },
         ],
       },
     ],
   },
   {
     type: "megaMenu",
-    labelKey: "reglementation",
-    href: sectionPaths.reglementation,
+    labelKey: "proprieteIntellectuelle",
+    href: sectionPaths.proprieteIntellectuelle,
     leader: {
-      titleKey: "reglementation.title",
-      paragraphKey: "reglementation.text",
+      titleKey: "proprieteIntellectuelle.title",
+      paragraphKey: "proprieteIntellectuelle.text",
       link: {
-        labelKey: "reglementation.allLink",
-        href: sectionPaths.reglementation,
+        labelKey: "proprieteIntellectuelle.allLink",
+        href: sectionPaths.proprieteIntellectuelle,
       },
     },
     primaryItems: [
       {
-        labelKey: "reglementation.cadreLegal.title",
-        href: `${sectionPaths.reglementation}/cadre-legal`,
+        labelKey: "proprieteIntellectuelle.marques.title",
+        href: `${sectionPaths.proprieteIntellectuelle}/marques`,
         links: [
-          { labelKey: "reglementation.cadreLegal.textesDeReference", href: `${sectionPaths.reglementation}/cadre-legal/textes-de-reference` },
-          { labelKey: "reglementation.cadreLegal.loiEtDecrets", href: `${sectionPaths.reglementation}/cadre-legal/loi-et-decrets` },
-          { labelKey: "reglementation.cadreLegal.codeDeLaConsommation", href: `${sectionPaths.reglementation}/cadre-legal/code-de-la-consommation` },
-          { labelKey: "reglementation.cadreLegal.jurisprudence", href: `${sectionPaths.reglementation}/cadre-legal/jurisprudence` },
+          { labelKey: "proprieteIntellectuelle.marques.deposer", href: `${sectionPaths.proprieteIntellectuelle}/marques/deposer-une-marque` },
+          { labelKey: "proprieteIntellectuelle.marques.rechercher", href: `${sectionPaths.proprieteIntellectuelle}/marques/rechercher-une-marque` },
+          { labelKey: "proprieteIntellectuelle.marques.renouveler", href: `${sectionPaths.proprieteIntellectuelle}/marques/renouveler-une-marque` },
+          { labelKey: "proprieteIntellectuelle.marques.contester", href: `${sectionPaths.proprieteIntellectuelle}/marques/contester-une-marque` },
         ],
       },
       {
-        labelKey: "reglementation.obligations.title",
-        href: `${sectionPaths.reglementation}/obligations`,
+        labelKey: "proprieteIntellectuelle.brevets.title",
+        href: `${sectionPaths.proprieteIntellectuelle}/brevets`,
         links: [
-          { labelKey: "reglementation.obligations.consultationObligatoire", href: `${sectionPaths.reglementation}/obligations/consultation-obligatoire` },
-          { labelKey: "reglementation.obligations.informationDesConsommateurs", href: `${sectionPaths.reglementation}/obligations/information-des-consommateurs` },
-          { labelKey: "reglementation.obligations.obligationsDesOperateurs", href: `${sectionPaths.reglementation}/obligations/obligations-des-operateurs` },
-          { labelKey: "reglementation.obligations.obligationsDesPlateformes", href: `${sectionPaths.reglementation}/obligations/obligations-des-plateformes` },
+          { labelKey: "proprieteIntellectuelle.brevets.deposer", href: `${sectionPaths.proprieteIntellectuelle}/brevets/deposer-un-brevet` },
+          { labelKey: "proprieteIntellectuelle.brevets.rechercher", href: `${sectionPaths.proprieteIntellectuelle}/brevets/rechercher-un-brevet` },
+          { labelKey: "proprieteIntellectuelle.brevets.dureeEtendue", href: `${sectionPaths.proprieteIntellectuelle}/brevets/duree-et-etendue` },
+          { labelKey: "proprieteIntellectuelle.brevets.contester", href: `${sectionPaths.proprieteIntellectuelle}/brevets/contester-un-brevet` },
         ],
       },
       {
-        labelKey: "reglementation.restrictions.title",
-        href: `${sectionPaths.reglementation}/restrictions`,
+        labelKey: "proprieteIntellectuelle.dessinsEtModeles.title",
+        href: `${sectionPaths.proprieteIntellectuelle}/dessins-et-modeles`,
         links: [
-          { labelKey: "reglementation.restrictions.horairesDAppel", href: `${sectionPaths.reglementation}/restrictions/horaires-d-appel` },
-          { labelKey: "reglementation.restrictions.joursEtPeriodes", href: `${sectionPaths.reglementation}/restrictions/jours-et-periodes` },
-          { labelKey: "reglementation.restrictions.numerosInterdits", href: `${sectionPaths.reglementation}/restrictions/numeros-interdits` },
-          { labelKey: "reglementation.restrictions.secteursReglementes", href: `${sectionPaths.reglementation}/restrictions/secteurs-reglementes` },
+          { labelKey: "proprieteIntellectuelle.dessinsEtModeles.deposer", href: `${sectionPaths.proprieteIntellectuelle}/dessins-et-modeles/deposer` },
+          { labelKey: "proprieteIntellectuelle.dessinsEtModeles.rechercher", href: `${sectionPaths.proprieteIntellectuelle}/dessins-et-modeles/rechercher` },
+          { labelKey: "proprieteIntellectuelle.dessinsEtModeles.protectionDuree", href: `${sectionPaths.proprieteIntellectuelle}/dessins-et-modeles/protection-et-duree` },
+          { labelKey: "proprieteIntellectuelle.dessinsEtModeles.contester", href: `${sectionPaths.proprieteIntellectuelle}/dessins-et-modeles/contester` },
         ],
       },
       {
-        labelKey: "reglementation.controles.title",
-        href: `${sectionPaths.reglementation}/controles`,
+        labelKey: "proprieteIntellectuelle.informations.title",
+        href: `${sectionPaths.proprieteIntellectuelle}/informations`,
         links: [
-          { labelKey: "reglementation.controles.autoriteDeControle", href: `${sectionPaths.reglementation}/controles/autorite-de-controle` },
-          { labelKey: "reglementation.controles.proceduresDeControle", href: `${sectionPaths.reglementation}/controles/procedures-de-controle` },
-          { labelKey: "reglementation.controles.controlesEtSignalements", href: `${sectionPaths.reglementation}/controles/controles-et-signalements` },
-          { labelKey: "reglementation.controles.resultatsDesControles", href: `${sectionPaths.reglementation}/controles/resultats-des-controles` },
+          { labelKey: "proprieteIntellectuelle.informations.questCeQue", href: `${sectionPaths.proprieteIntellectuelle}/informations/quest-ce-que-la-propriete-intellectuelle` },
+          { labelKey: "proprieteIntellectuelle.informations.droitsCreateurs", href: `${sectionPaths.proprieteIntellectuelle}/informations/droits-des-createurs` },
+          { labelKey: "proprieteIntellectuelle.informations.cadreJuridique", href: `${sectionPaths.proprieteIntellectuelle}/informations/cadre-juridique` },
+          { labelKey: "proprieteIntellectuelle.informations.aidesConseils", href: `${sectionPaths.proprieteIntellectuelle}/informations/aides-et-conseils` },
         ],
       },
     ],
   },
   {
     type: "megaMenu",
-    labelKey: "services",
-    href: sectionPaths.services,
+    labelKey: "documents",
+    href: sectionPaths.documents,
     leader: {
-      titleKey: "services.title",
-      paragraphKey: "services.text",
-      link: { labelKey: "services.allLink", href: sectionPaths.services },
+      titleKey: "documents.title",
+      paragraphKey: "documents.text",
+      link: {
+        labelKey: "documents.allLink",
+        href: sectionPaths.documents,
+      },
     },
     primaryItems: [
       {
-        labelKey: "services.portailCitoyen.title",
-        href: `${sectionPaths.services}/portail-citoyen`,
+        labelKey: "documents.extraits.title",
+        href: `${sectionPaths.documents}/extraits`,
         links: [
-          { labelKey: "services.portailCitoyen.mInscrire", href: `${sectionPaths.services}/portail-citoyen/m-inscrire` },
-          { labelKey: "services.portailCitoyen.signalerUnAppel", href: `${sectionPaths.services}/portail-citoyen/signaler-un-appel` },
-          { labelKey: "services.portailCitoyen.monEspace", href: `${sectionPaths.services}/portail-citoyen/mon-espace` },
-          { labelKey: "services.portailCitoyen.aideEnLigne", href: `${sectionPaths.services}/portail-citoyen/aide-en-ligne` },
+          { labelKey: "documents.extraits.commander", href: `${sectionPaths.documents}/extraits/commander-un-extrait` },
+          { labelKey: "documents.extraits.extraitK", href: `${sectionPaths.documents}/extraits/extrait-k` },
+          { labelKey: "documents.extraits.immatriculation", href: `${sectionPaths.documents}/extraits/extrait-d-immatriculation` },
+          { labelKey: "documents.extraits.certifie", href: `${sectionPaths.documents}/extraits/extrait-certifie` },
         ],
       },
       {
-        labelKey: "services.portailProfessionnel.title",
-        href: `${sectionPaths.services}/portail-professionnel`,
+        labelKey: "documents.certificats.title",
+        href: `${sectionPaths.documents}/certificats`,
         links: [
-          { labelKey: "services.portailProfessionnel.seConnecter", href: `${sectionPaths.services}/portail-professionnel/se-connecter` },
-          { labelKey: "services.portailProfessionnel.interrogerLaListe", href: `${sectionPaths.services}/portail-professionnel/interroger-la-liste` },
-          { labelKey: "services.portailProfessionnel.abonnements", href: `${sectionPaths.services}/portail-professionnel/abonnements` },
-          { labelKey: "services.portailProfessionnel.support", href: `${sectionPaths.services}/portail-professionnel/support` },
+          { labelKey: "documents.certificats.existence", href: `${sectionPaths.documents}/certificats/certificat-d-existence` },
+          { labelKey: "documents.certificats.immatriculation", href: `${sectionPaths.documents}/certificats/certificat-d-immatriculation` },
+          { labelKey: "documents.certificats.attestations", href: `${sectionPaths.documents}/certificats/attestations` },
+          { labelKey: "documents.certificats.legalisation", href: `${sectionPaths.documents}/certificats/legalisation` },
         ],
       },
       {
-        labelKey: "services.developpeurs.title",
-        href: `${sectionPaths.services}/developpeurs`,
+        labelKey: "documents.documentsDeposes.title",
+        href: `${sectionPaths.documents}/documents-deposes`,
         links: [
-          { labelKey: "services.developpeurs.apiBloctel", href: `${sectionPaths.services}/developpeurs/api-bloctel` },
-          { labelKey: "services.developpeurs.documentation", href: `${sectionPaths.services}/developpeurs/documentation` },
-          { labelKey: "services.developpeurs.guidesTechniques", href: `${sectionPaths.services}/developpeurs/guides-techniques` },
-          { labelKey: "services.developpeurs.statutDuService", href: `${sectionPaths.services}/developpeurs/statut-du-service` },
+          { labelKey: "documents.documentsDeposes.actes", href: `${sectionPaths.documents}/documents-deposes/actes-deposes` },
+          { labelKey: "documents.documentsDeposes.etatsFinanciers", href: `${sectionPaths.documents}/documents-deposes/etats-financiers` },
+          { labelKey: "documents.documentsDeposes.conventions", href: `${sectionPaths.documents}/documents-deposes/conventions-et-contrats` },
+          { labelKey: "documents.documentsDeposes.consultation", href: `${sectionPaths.documents}/documents-deposes/consultation-en-ligne` },
         ],
       },
       {
-        labelKey: "services.donneesPubliques.title",
-        href: `${sectionPaths.services}/donnees-publiques`,
+        labelKey: "documents.verifier.title",
+        href: `${sectionPaths.documents}/verifier`,
         links: [
-          { labelKey: "services.donneesPubliques.statistiques", href: `${sectionPaths.services}/donnees-publiques/statistiques` },
-          { labelKey: "services.donneesPubliques.jeuxDeDonnees", href: `${sectionPaths.services}/donnees-publiques/jeux-de-donnees` },
-          { labelKey: "services.donneesPubliques.rapports", href: `${sectionPaths.services}/donnees-publiques/rapports` },
-          { labelKey: "services.donneesPubliques.openData", href: `${sectionPaths.services}/donnees-publiques/open-data` },
+          { labelKey: "documents.verifier.piece", href: `${sectionPaths.documents}/verifier/verifier-une-piece` },
+          { labelKey: "documents.verifier.extrait", href: `${sectionPaths.documents}/verifier/verifier-un-extrait` },
+          { labelKey: "documents.verifier.authenticite", href: `${sectionPaths.documents}/verifier/authenticite-des-documents` },
+          { labelKey: "documents.verifier.securiteFraude", href: `${sectionPaths.documents}/verifier/securite-et-fraude` },
         ],
       },
     ],
   },
   {
     type: "megaMenu",
-    labelKey: "aide",
-    href: sectionPaths.aide,
+    labelKey: "donnees",
+    href: sectionPaths.donnees,
     leader: {
-      titleKey: "aide.title",
-      paragraphKey: "aide.text",
-      link: { labelKey: "aide.allLink", href: sectionPaths.aide },
+      titleKey: "donnees.title",
+      paragraphKey: "donnees.text",
+      link: {
+        labelKey: "donnees.allLink",
+        href: sectionPaths.donnees,
+      },
     },
     primaryItems: [
       {
-        labelKey: "aide.questionsFrequentes.title",
-        href: `${sectionPaths.aide}/questions-frequentes`,
+        labelKey: "donnees.donneesOuvertes.title",
+        href: `${sectionPaths.donnees}/donnees-ouvertes`,
         links: [
-          { labelKey: "aide.questionsFrequentes.inscription", href: `${sectionPaths.aide}/questions-frequentes/inscription` },
-          { labelKey: "aide.questionsFrequentes.signalement", href: `${sectionPaths.aide}/questions-frequentes/signalement` },
-          { labelKey: "aide.questionsFrequentes.droits", href: `${sectionPaths.aide}/questions-frequentes/droits` },
-          { labelKey: "aide.questionsFrequentes.professionnels", href: `${sectionPaths.aide}/questions-frequentes/professionnels` },
+          { labelKey: "donnees.donneesOuvertes.jeuxDeDonnees", href: `${sectionPaths.donnees}/donnees-ouvertes/jeux-de-donnees` },
+          { labelKey: "donnees.donneesOuvertes.licence", href: `${sectionPaths.donnees}/donnees-ouvertes/licence-ouverte` },
+          { labelKey: "donnees.donneesOuvertes.qualite", href: `${sectionPaths.donnees}/donnees-ouvertes/qualite-des-donnees` },
+          { labelKey: "donnees.donneesOuvertes.reutilisation", href: `${sectionPaths.donnees}/donnees-ouvertes/reutilisation` },
         ],
       },
       {
-        labelKey: "aide.guides.title",
-        href: `${sectionPaths.aide}/guides`,
+        labelKey: "donnees.statistiques.title",
+        href: `${sectionPaths.donnees}/statistiques`,
         links: [
-          { labelKey: "aide.guides.guideDuCitoyen", href: `${sectionPaths.aide}/guides/guide-du-citoyen` },
-          { labelKey: "aide.guides.guideDuProfessionnel", href: `${sectionPaths.aide}/guides/guide-du-professionnel` },
-          { labelKey: "aide.guides.tutoriels", href: `${sectionPaths.aide}/guides/tutoriels` },
-          { labelKey: "aide.guides.fichesPratiques", href: `${sectionPaths.aide}/guides/fiches-pratiques` },
+          { labelKey: "donnees.statistiques.chiffresCles", href: `${sectionPaths.donnees}/statistiques/chiffres-cles` },
+          { labelKey: "donnees.statistiques.creationsCessations", href: `${sectionPaths.donnees}/statistiques/creations-et-cessations` },
+          { labelKey: "donnees.statistiques.repartitionSectorielle", href: `${sectionPaths.donnees}/statistiques/repartition-sectorielle` },
+          { labelKey: "donnees.statistiques.rapportsAnnuel", href: `${sectionPaths.donnees}/statistiques/rapports-annuels` },
         ],
       },
       {
-        labelKey: "aide.assistance.title",
-        href: `${sectionPaths.aide}/assistance`,
+        labelKey: "donnees.api.title",
+        href: `${sectionPaths.donnees}/api`,
         links: [
-          { labelKey: "aide.assistance.contacterLAssistance", href: `${sectionPaths.aide}/assistance/contacter-l-assistance` },
-          { labelKey: "aide.assistance.formulaireDeContact", href: `${sectionPaths.aide}/assistance/formulaire-de-contact` },
-          { labelKey: "aide.assistance.numeroDAide", href: `${sectionPaths.aide}/assistance/numero-d-aide` },
-          { labelKey: "aide.assistance.horaires", href: `${sectionPaths.aide}/assistance/horaires` },
+          { labelKey: "donnees.api.acces", href: `${sectionPaths.donnees}/api/acces-aux-api` },
+          { labelKey: "donnees.api.documentation", href: `${sectionPaths.donnees}/api/documentation` },
+          { labelKey: "donnees.api.guidesTechniques", href: `${sectionPaths.donnees}/api/guides-techniques` },
+          { labelKey: "donnees.api.statutService", href: `${sectionPaths.donnees}/api/statut-du-service` },
         ],
       },
       {
-        labelKey: "aide.aPropos.title",
-        href: `${sectionPaths.aide}/a-propos`,
+        labelKey: "donnees.telechargements.title",
+        href: `${sectionPaths.donnees}/telechargements`,
         links: [
-          { labelKey: "aide.aPropos.questCeQueBloctel", href: `${sectionPaths.aide}/a-propos/quest-ce-que-bloctel` },
-          { labelKey: "aide.aPropos.missions", href: `${sectionPaths.aide}/a-propos/missions` },
-          { labelKey: "aide.aPropos.quiSommesNous", href: `${sectionPaths.aide}/a-propos/qui-sommes-nous` },
-          { labelKey: "aide.aPropos.contact", href: `${sectionPaths.aide}/a-propos/contact` },
+          { labelKey: "donnees.telechargements.fichiers", href: `${sectionPaths.donnees}/telechargements/fichiers-du-registre` },
+          { labelKey: "donnees.telechargements.misesAJour", href: `${sectionPaths.donnees}/telechargements/mises-a-jour` },
+          { labelKey: "donnees.telechargements.formats", href: `${sectionPaths.donnees}/telechargements/formats-disponibles` },
+          { labelKey: "donnees.telechargements.extraction", href: `${sectionPaths.donnees}/telechargements/extraction-sur-mesure` },
+        ],
+      },
+    ],
+  },
+  {
+    type: "megaMenu",
+    labelKey: "rnea",
+    href: sectionPaths.rnea,
+    leader: {
+      titleKey: "rnea.title",
+      paragraphKey: "rnea.text",
+      link: {
+        labelKey: "rnea.allLink",
+        href: sectionPaths.rnea,
+      },
+    },
+    primaryItems: [
+      {
+        labelKey: "rnea.aPropos.title",
+        href: `${sectionPaths.rnea}/a-propos`,
+        links: [
+          { labelKey: "rnea.aPropos.questCeQue", href: `${sectionPaths.rnea}/a-propos/quest-ce-que-le-rnea` },
+          { labelKey: "rnea.aPropos.missions", href: `${sectionPaths.rnea}/a-propos/missions` },
+          { labelKey: "rnea.aPropos.organisation", href: `${sectionPaths.rnea}/a-propos/organisation` },
+          { labelKey: "rnea.aPropos.textesFondateurs", href: `${sectionPaths.rnea}/a-propos/textes-fondateurs` },
+        ],
+      },
+      {
+        labelKey: "rnea.tarifs.title",
+        href: `${sectionPaths.rnea}/tarifs`,
+        links: [
+          { labelKey: "rnea.tarifs.formalites", href: `${sectionPaths.rnea}/tarifs/tarifs-des-formalites` },
+          { labelKey: "rnea.tarifs.documents", href: `${sectionPaths.rnea}/tarifs/tarifs-des-documents` },
+          { labelKey: "rnea.tarifs.gratuitesExonerations", href: `${sectionPaths.rnea}/tarifs/gratuites-et-exonerations` },
+          { labelKey: "rnea.tarifs.paiement", href: `${sectionPaths.rnea}/tarifs/modalites-de-paiement` },
+        ],
+      },
+      {
+        labelKey: "rnea.aide.title",
+        href: `${sectionPaths.rnea}/aide`,
+        links: [
+          { labelKey: "rnea.aide.questionsFrequentes", href: `${sectionPaths.rnea}/aide/questions-frequentes` },
+          { labelKey: "rnea.aide.guidesTutoriels", href: `${sectionPaths.rnea}/aide/guides-et-tutoriels` },
+          { labelKey: "rnea.aide.demarchesPasAPas", href: `${sectionPaths.rnea}/aide/demarches-pas-a-pas` },
+          { labelKey: "rnea.aide.glossaire", href: `${sectionPaths.rnea}/aide/glossaire` },
+        ],
+      },
+      {
+        labelKey: "rnea.contact.title",
+        href: `${sectionPaths.rnea}/contact`,
+        links: [
+          { labelKey: "rnea.contact.nousContacter", href: `${sectionPaths.rnea}/contact/nous-contacter` },
+          { labelKey: "rnea.contact.horaires", href: `${sectionPaths.rnea}/contact/horaires-d-ouverture` },
+          { labelKey: "rnea.contact.servicesEnLigne", href: `${sectionPaths.rnea}/contact/services-en-ligne` },
+          { labelKey: "rnea.contact.pressePartenaires", href: `${sectionPaths.rnea}/contact/presse-et-partenaires` },
         ],
       },
     ],
