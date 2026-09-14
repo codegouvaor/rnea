@@ -8,12 +8,12 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	redisclient "github.com/codegouvaor/bloctel/server/internal/redis"
-	"github.com/codegouvaor/bloctel/server/src/config"
-	"github.com/codegouvaor/bloctel/server/src/interfaces"
-	"github.com/codegouvaor/bloctel/server/src/middleware"
-	"github.com/codegouvaor/bloctel/server/src/services"
-	"github.com/codegouvaor/bloctel/server/src/utils"
+	redisclient "github.com/codegouvaor/rnea/server/internal/redis"
+	"github.com/codegouvaor/rnea/server/src/config"
+	"github.com/codegouvaor/rnea/server/src/interfaces"
+	"github.com/codegouvaor/rnea/server/src/middleware"
+	"github.com/codegouvaor/rnea/server/src/services"
+	"github.com/codegouvaor/rnea/server/src/utils"
 )
 
 type Dependencies struct {

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	redisclient "github.com/codegouvaor/bloctel/server/internal/redis"
+	redisclient "github.com/codegouvaor/rnea/server/internal/redis"
 )
 
 type AuthRateLimiter struct {

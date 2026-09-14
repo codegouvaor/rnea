@@ -12,11 +12,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	redisclient "github.com/codegouvaor/bloctel/server/internal/redis"
-	"github.com/codegouvaor/bloctel/server/src/config"
-	"github.com/codegouvaor/bloctel/server/src/middleware"
-	"github.com/codegouvaor/bloctel/server/src/routes"
-	"github.com/codegouvaor/bloctel/server/src/services"
+	redisclient "github.com/codegouvaor/rnea/server/internal/redis"
+	"github.com/codegouvaor/rnea/server/src/config"
+	"github.com/codegouvaor/rnea/server/src/middleware"
+	"github.com/codegouvaor/rnea/server/src/routes"
+	"github.com/codegouvaor/rnea/server/src/services"
 )
 
 type runtimeMode string

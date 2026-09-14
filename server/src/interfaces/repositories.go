@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/codegouvaor/bloctel/server/src/models"
+	"github.com/codegouvaor/rnea/server/src/models"
 )
 
 type UserRepository interface {

@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/codegouvaor/bloctel/server/src/models"
-	"github.com/codegouvaor/bloctel/server/src/utils"
+	"github.com/codegouvaor/rnea/server/src/models"
+	"github.com/codegouvaor/rnea/server/src/utils"
 )
 
 func (h *apiHandler) listWebhooks(c *gin.Context) {

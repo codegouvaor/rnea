@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/codegouvaor/bloctel/server/src/interfaces"
-	"github.com/codegouvaor/bloctel/server/src/models"
-	"github.com/codegouvaor/bloctel/server/src/utils"
+	"github.com/codegouvaor/rnea/server/src/interfaces"
+	"github.com/codegouvaor/rnea/server/src/models"
+	"github.com/codegouvaor/rnea/server/src/utils"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )

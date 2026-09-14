@@ -1,4 +1,4 @@
-module github.com/codegouvaor/bloctel
+module github.com/codegouvaor/rnea
 
 go 1.25.5
 

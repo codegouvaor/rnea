@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	"github.com/codegouvaor/bloctel/server/src/models"
+	"github.com/codegouvaor/rnea/server/src/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
