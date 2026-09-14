@@ -1,7 +1,7 @@
 {
-  "name": "bloctel",
+  "name": "rnea",
   "version": "1.0.0",
-  "description": "Astoria's national service for managing unwanted commercial communications.",
+  "description": "National business registry and corporate services platform of the Republic of Astoria.",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -68,7 +68,7 @@
   "packageManager": "pnpm@8.15.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/codegouvaor/bloctel.git"
+    "url": "https://github.com/codegouvaor/rnea.git"
   },
   "keywords": [
     "news",
@@ -80,14 +80,14 @@
   ],
   "author": {
     "name": "Astoria Government Development Team",
-    "email": "developer@defense.gouv.aor",
-    "url": "https://defense.gouv.aor"
+    "email": "developer@rnea.gouv.aor",
+    "url": "https://rnea.gouv.aor"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/codegouvaor/bloctel/issues"
+    "url": "https://github.com/codegouvaor/rnea/issues"
   },
-  "homepage": "https://github.com/codegouvaor/bloctel#readme",
+  "homepage": "https://github.com/codegouvaor/rnea#readme",
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
       "eslint --fix --quiet",
